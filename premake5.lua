@@ -3,8 +3,8 @@ project "GLFW"
 	language "C"
 	staticruntime "off"
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir ( "%{wks.location}/build/" .. outputdir .. "/%{prj.name}")
+    objdir ( "%{wks.location}/build-int/" .. outputdir .. "/%{prj.name}")
 
 	files
 	{
@@ -25,6 +25,41 @@ project "GLFW"
 		"src/vulkan.c",
 		"src/window.c",
 	}
+
+	filter "system:macosx"
+
+        links 
+		{
+            "Cocoa.framework",
+            "OpenGL.framework",
+            "IOKit.framework",
+            "CoreVideo.framework",
+			"CoreFoundation.framework"
+        }
+
+		files
+		{
+			"src/cocoa_time.h",
+			"src/cocoa_time.c",
+			"src/posix_thread.h",
+			"src/posix_module.c",
+			"src/posix_thread.c",
+
+			"src/cocoa_platform.h",
+			"src/cocoa_joystick.h",
+			"src/cocoa_init.m",
+			"src/cocoa_joystick.m",
+			"src/cocoa_monitor.m",
+			"src/cocoa_window.m",
+			"src/nsgl_context.m",
+			"src/egl_context.c",
+			"src/osmesa_context.c"
+		}
+
+		defines
+		{
+			"_GLFW_COCOA"
+		}
 
 	filter "system:linux"
 		pic "On"
